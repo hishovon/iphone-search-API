@@ -1,34 +1,47 @@
 const loadPhone = async (searchText) => {
-  
-const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
-const res = await fetch(url);
-const data = await res.json();
 
-displayPhones(data.data);
+  const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
+  const res = await fetch(url);
+  const data = await res.json();
+
+  displayPhones(data.data);
 
 }
 
 
 const displayPhones = phones => {
 
-const phonesContainer = document.getElementById("phone-container")
-phonesContainer.innerText='';
-phones = phones.slice(0,15);
-const warningMessage=document.getElementById('no-phone');
+  const phonesContainer = document.getElementById("phone-container")
+  phonesContainer.innerText = '';
 
-if(phones.length == 0){
- warningMessage.classList.remove('d-none')
+
+const showAll = document.getElementById('show-all');
+
+if (phones.length > 10) {
+  phones = phones.slice(0, 15);
+  showAll.classList.remove('d-none');
 }
 else{
+  showAll.classList.add('d-none');
+}
+
+
+
+const warningMessage = document.getElementById('no-phone');
+
+if (phones.length === 0) {
+  warningMessage.classList.remove('d-none')
+}
+else {
   warningMessage.classList.add('d-none');
 }
 
 
 phones.forEach(phone => {
 
-const phoneDiv = document.createElement('div')
-phoneDiv.classList.add('col');
-phoneDiv.innerHTML=`
+  const phoneDiv = document.createElement('div')
+  phoneDiv.classList.add('col');
+  phoneDiv.innerHTML = `
 
 <div class="card p-4">
                 <img src="${phone.image}" class="card-img-top" alt="...">
@@ -40,7 +53,7 @@ phoneDiv.innerHTML=`
 
 `;
 
-phonesContainer.appendChild(phoneDiv);
+  phonesContainer.appendChild(phoneDiv);
 
 })
 
@@ -51,23 +64,23 @@ toggleLoader(false);
 
 
 
-document.getElementById('search').addEventListener('click', function(){
+document.getElementById('search').addEventListener('click', function () {
 
   toggleLoader(true);
 
-const searchField = document.getElementById('search-field');
-const searchText=searchField.value;
-loadPhone(searchText);
+  const searchField = document.getElementById('search-field');
+  const searchText = searchField.value;
+  loadPhone(searchText);
 })
 
 
 const toggleLoader = isLoading => {
   const loadSection = document.getElementById('loader');
 
-  if(isLoading){
+  if (isLoading) {
     loadSection.classList.remove('d-none');
   }
-  else{
+  else {
     loadSection.classList.add('d-none');
   }
 }
